@@ -1,0 +1,43 @@
+<div *ngIf="tableMode; else create" class="container-main">
+  <!--<a [routerLink]='["/counter"]'>Counter</a>-->
+  <h1 class="text-center title"><b>{{ survey.surveyName }}</b></h1>
+  <div>{{ survey.description }}</div>
+  <br />
+  <div class="row">
+    <div class="col-md-4 space-around text-center">
+      <br />
+      <h5 class="card-subtitle mb-2 text-muted">{{ survey.creatorName }}</h5>
+    </div>
+    <div class="col-md-8 text-right space-around">
+      <p><span class="card-subtitle mb-2 text-muted text-date">{{ survey.createdAt | date }}</span></p>
+      <button type="button" class="btn-style" (click)="add()">Add new question</button>
+    </div>
+  </div>
+  <br />
+  <div class="card" *ngFor="let question of questions; let i = index">
+    <div class="flexcontainer">
+      <div class=" space-around card-question">
+        <p> {{ question.questionName }}</p>
+        <div>{{ question.shortComment }}</div>
+      </div>
+      <div class="space-around">
+        <div>
+          <ul *ngFor="let answer of question.answers">
+            <li>{{answer}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="paragraph-line"></div>
+  </div>
+</div>
+
+<ng-template #create>
+  <div class="form-group">
+    TT
+    <label>Aircraft name</label><!--  [(ngModel)]="aircraft.aircraftName" -->
+    <input type="text" class="form-control"/>
+  </div>
+  <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+</ng-template>
+
