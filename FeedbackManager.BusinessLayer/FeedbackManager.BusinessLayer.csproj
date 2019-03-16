@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FeedbackManager.DataAccessLayer\FeedbackManager.DataAccessLayer.csproj" />
+    <ProjectReference Include="..\FeedbackManager.Shared\FeedbackManager.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
