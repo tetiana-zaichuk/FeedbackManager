@@ -1,3 +1,11 @@
+using AutoMapper;
+using FeedbackManager.BusinessLayer.Interfaces;
+using FeedbackManager.BusinessLayer.Services;
+using FeedbackManager.DataAccessLayer;
+using FeedbackManager.DataAccessLayer.Data;
+using FeedbackManager.DataAccessLayer.Entities;
+using FeedbackManager.DataAccessLayer.Interfaces;
+using FeedbackManager.Shared.Dtos;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,10 +37,34 @@ namespace FeedbackManager
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ISurveyService, SurveyService>();
+            services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<ISurveyQuestionsService, SurveyQuestionsService>();
+
+
             services.AddDbContext<FeedbackManagerDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly(Configuration["MigrationsAssembly"])));
+
+            InitializeAutomapper(services);
         }
+
+        public virtual IServiceCollection InitializeAutomapper(IServiceCollection services)
+        {
+            var mappingConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Survey, SurveyDto>();
+                cfg.CreateMap<SurveyDto, Survey>();
+                cfg.CreateMap<Question, QuestionDto>();
+                cfg.CreateMap<QuestionDto, Question>();
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            return services;
+        }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

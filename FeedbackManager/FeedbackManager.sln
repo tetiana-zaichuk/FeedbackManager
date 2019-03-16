@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FeedbackManager", "Feedback
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackManager.DataAccessLayer", "..\FeedbackManager.DataAccessLayer\FeedbackManager.DataAccessLayer.csproj", "{168379E9-AE3A-4E8A-8D16-B38AD7329917}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackManager.Shared", "..\FeedbackManager.Shared\FeedbackManager.Shared.csproj", "{5C22078F-6EB2-4C67-811A-480DE8BF1273}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeedbackManager.BusinessLayer", "..\FeedbackManager.BusinessLayer\FeedbackManager.BusinessLayer.csproj", "{58253C73-64CF-4667-8108-5CA667F3940E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{168379E9-AE3A-4E8A-8D16-B38AD7329917}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{168379E9-AE3A-4E8A-8D16-B38AD7329917}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{168379E9-AE3A-4E8A-8D16-B38AD7329917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C22078F-6EB2-4C67-811A-480DE8BF1273}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C22078F-6EB2-4C67-811A-480DE8BF1273}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C22078F-6EB2-4C67-811A-480DE8BF1273}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C22078F-6EB2-4C67-811A-480DE8BF1273}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58253C73-64CF-4667-8108-5CA667F3940E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58253C73-64CF-4667-8108-5CA667F3940E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58253C73-64CF-4667-8108-5CA667F3940E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58253C73-64CF-4667-8108-5CA667F3940E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
