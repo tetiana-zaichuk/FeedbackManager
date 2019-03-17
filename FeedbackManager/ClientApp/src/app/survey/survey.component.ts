@@ -6,8 +6,6 @@ import { Survey } from '../shared/models/survey.model';
 import { ActivatedRoute } from '@angular/router';
 import { SurveyService } from '../shared/services/survey.service';
 import { Subscription } from 'rxjs';
-import Surveymodel = require("../shared/models/survey.model");
-import Survey = Surveymodel.Survey;
 
 @Component({
   selector: 'app-survey',
