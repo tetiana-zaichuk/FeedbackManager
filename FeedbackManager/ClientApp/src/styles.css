@@ -9,6 +9,11 @@
   min-height: 29.7cm;
 }
 
+.form-group {
+  margin: 20px 0;
+  font-size: medium;
+}
+
 .title {
   margin-bottom: 25px;
 }
@@ -43,4 +48,8 @@
 
 .text-right {
   text-align: right;
+}
+
+.text-left {
+  text-align: left;
 }

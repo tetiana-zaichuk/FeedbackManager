@@ -6,6 +6,8 @@ import { Survey } from '../shared/models/survey.model';
 import { ActivatedRoute } from '@angular/router';
 import { SurveyService } from '../shared/services/survey.service';
 import { Subscription } from 'rxjs';
+import Surveymodel = require("../shared/models/survey.model");
+import Survey = Surveymodel.Survey;
 
 @Component({
   selector: 'app-survey',
@@ -17,6 +19,9 @@ export class SurveyComponent implements OnInit, OnDestroy {
   surveyId: number;
   survey: Survey;
   questions: Question[];
+  questionName: string;
+  shortComment: string;
+  answers: string;
   tableMode: boolean = true;
   isSubmiting: Boolean = false;
   private subscription: Subscription;
@@ -33,13 +38,37 @@ export class SurveyComponent implements OnInit, OnDestroy {
     this.surveyQuestionsService.getAllById(this.surveyId).subscribe((value: Question[]) => this.questions = value);
 
   }
-  
+
   cancel() {
     this.tableMode = true;
+    this.questionName = null;
+    this.shortComment = null;
+    this.answers = null;
   }
 
   add() {
     this.tableMode = false;
+  }
+
+  onSubmit() {
+    const newQuestion: Question = {
+      id: 0,
+      questionName: this.questionName,
+      shortComment: this.shortComment,
+      answers: this.answers.split(';'),
+      surveyId: this.surveyId,
+      survey: null
+    };
+
+    this.questionService.create(newQuestion).
+      subscribe(
+        value => {
+          this.isSubmiting = false;
+          this.tableMode = true;
+        },
+        error => {
+          this.isSubmiting = false;
+        });
   }
 
   ngOnDestroy() {

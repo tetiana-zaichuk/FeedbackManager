@@ -1,29 +1,59 @@
-<h1>Hello, world!</h1>
-<p>Welcome to your new single-page application, built with:</p>
-<ul>
-  <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-  <li><a href='https://angular.io/'>Angular</a> and <a href='http://www.typescriptlang.org/'>TypeScript</a> for client-side code</li>
-  <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-</ul>
-<p>To help you get started, we've also set up:</p>
-<ul>
-  <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-  <li><strong>Angular CLI integration</strong>. In development mode, there's no need to run <code>ng serve</code>. It runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-  <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration automatically invokes <code>ng build</code> to produce minified, ahead-of-time compiled JavaScript files.</li>
-</ul>
-<p>The <code>ClientApp</code> subdirectory is a standard Angular CLI application. If you open a command prompt in that directory, you can run any <code>ng</code> command (e.g., <code>ng test</code>), or use <code>npm</code> to install extra packages into it.</p>
+<div class="container-main">
+  <div *ngIf="tableMode; else create">
+    <h1 class="text-center title"><em>Feedback Manager</em></h1>
+    <div class="text-right">
+      <button type="button" class="btn-style" (click)="add()">Create new Survey</button>
+    </div>
 
-<div *ngIf="tableMode; else create" class="list-wrapper">
-  TTT
-  <a [routerLink]='["/surveys-details/1"]'>Counter</a>
-  <input type="button" value="Add" class="btn btn-success" (click)="add()" />
-</div>
+    <div class="card" *ngFor="let survey of surveys; let i = index">
+      <div class="row">
+        <div class="col-md-11 space-around">
+          <h3 class="card-title">
+            <b>{{ survey.surveyName }}</b>
+            <span class="card-subtitle mb-2 text-muted text-date">{{ survey.createdAt | date }}</span>
+          </h3>
+          <h5 class="card-subtitle mb-2 text-muted">{{ survey.creatorName }}</h5>
+        </div>
+        <div class="col-md-1 text-right space-around">
+          <div (click)="goToDetails(survey.id)" style="cursor: pointer">
+            <span class="greater-than-sign">&#8250;</span>
+          </div>
+        </div>
+      </div>
+      <div class="paragraph-line"></div>
+    </div>
+  </div>
 
   <ng-template #create>
-    <div class="form-group">
-      TT
-      <label>Aircraft name</label><!--  [(ngModel)]="aircraft.aircraftName" -->
-      <input type="text" class="form-control"/>
+    <h1 class="text-center title"><em>Create new survey</em></h1>
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="cancel()">Back to surveys list</button>
     </div>
-    <input type="button" value="Cancel" (click)="cancel()" class="btn btn-warning" />
+    <div class="form-group">
+      <label>Creator name</label><!--   -->
+      <input type="text" [(ngModel)]="creatorName" class="form-control" placeholder="John Black" required/>
+    </div>
+    <div class="form-group">
+      <label>Survey title</label>
+      <input type="text" [(ngModel)]="surveyName" class="form-control" placeholder="Survey 1" required/>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" [(ngModel)]="description" class="form-control" placeholder="Description (optional)"/>
+    </div>
+    <div class="form-group">
+      <label>Created date</label>
+      <input type="text" class="form-control" disabled="disabled" value="Today"/>
+    </div>
+
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="onSubmit()">Save new survey</button>
+      <div class="invalid" *ngIf="validate()">
+        <label>Please fill out all required fields.</label>
+      </div>
+    </div>
   </ng-template>
+
+</div>
+
+
