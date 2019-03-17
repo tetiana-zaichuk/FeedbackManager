@@ -44,8 +44,8 @@ namespace FeedbackManager
 
 
             services.AddDbContext<FeedbackManagerDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly(Configuration["MigrationsAssembly"])));
+                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=FeedbackManagerDb;Trusted_Connection=True"));
+            //Configuration.GetConnectionString(",b => b.MigrationsAssembly(Configuration["MigrationsAssembly"])
 
             InitializeAutomapper(services);
         }
