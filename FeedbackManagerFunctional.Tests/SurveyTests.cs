@@ -29,8 +29,8 @@ namespace FeedbackManagerFunctional.Tests
         [SetUp]
         public void TestSetup()
         {
-            _survey = new SurveyDto { Id = 1, CreatorName = "Jose Moreno", CreatedAt = DateTime.UtcNow,
-                SurveyName = "Survey1", Description = "Some text 1", Questions = null};
+            _survey = new SurveyDto { Id = 2, CreatorName = "John Bleach", CreatedAt = DateTime.UtcNow,
+                SurveyName = "Survey2", Description = "Some text 2", Questions = null};
         }
 
         [TearDown]
@@ -67,7 +67,8 @@ namespace FeedbackManagerFunctional.Tests
         public async Task TestCreateSurvey()
         {
             _survey.Id = 0;
-            _survey.SurveyName = "Survey 7";
+            Random rnd = new Random();
+            _survey.SurveyName = "Survey " + rnd.Next(50);
             string json = await Task.Run(() => JsonConvert.SerializeObject(_survey));
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _client.PostAsync(Path, httpContent);
@@ -98,9 +99,10 @@ namespace FeedbackManagerFunctional.Tests
         [Test]
         public async Task TestDeleteById()
         {
-            var response = await _client.DeleteAsync(Path + _survey.Id);
+            //You can write an id that exist in database instead 3
+            var response = await _client.DeleteAsync(Path + "3");
             response.EnsureSuccessStatusCode();
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

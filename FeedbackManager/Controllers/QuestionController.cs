@@ -44,7 +44,7 @@ namespace FeedbackManager.Controllers
         {
             if (!_questionService.QuestionValidation(request))
             {
-                return BadRequest("Please fill out these fields: question title, survey id and answers.");
+                return BadRequest("Please fill out these fields: question title and answers.");
             }
 
             var dto = await _questionService.CreateEntityAsync(request);

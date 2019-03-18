@@ -19,7 +19,7 @@ namespace FeedbackManager.BusinessLayer.Services
             _mapper = mapper;
         }
 
-        public bool QuestionValidation(QuestionDto question) => !string.IsNullOrWhiteSpace(question.QuestionName) && question.SurveyId != 0 && question.Answers.Any();
+        public bool QuestionValidation(QuestionDto question) => !string.IsNullOrWhiteSpace(question.QuestionName) && question.Answers.Any();
 
         public async Task<IEnumerable<QuestionDto>> GetAllEntitiesAsync()
         {
