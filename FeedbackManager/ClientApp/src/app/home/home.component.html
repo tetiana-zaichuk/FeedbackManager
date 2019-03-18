@@ -1,0 +1,59 @@
+<div class="container-main">
+  <div *ngIf="tableMode; else create">
+    <h1 class="text-center title"><em>Feedback Manager</em></h1>
+    <div class="text-right">
+      <button type="button" class="btn-style" (click)="add()">Create new Survey</button>
+    </div>
+
+    <div class="card" *ngFor="let survey of surveys; let i = index">
+      <div class="row">
+        <div class="col-md-11 space-around">
+          <h3 class="card-title">
+            <b>{{ survey.surveyName }}</b>
+            <span class="card-subtitle mb-2 text-muted text-date">{{ survey.createdAt | date }}</span>
+          </h3>
+          <h5 class="card-subtitle mb-2 text-muted">{{ survey.creatorName }}</h5>
+        </div>
+        <div class="col-md-1 text-right space-around">
+          <div (click)="goToDetails(survey.id)" style="cursor: pointer">
+            <span class="greater-than-sign">&#8250;</span>
+          </div>
+        </div>
+      </div>
+      <div class="paragraph-line"></div>
+    </div>
+  </div>
+
+  <ng-template #create>
+    <h1 class="text-center title"><em>Create new survey</em></h1>
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="cancel()">Back to surveys list</button>
+    </div>
+    <div class="form-group">
+      <label>Creator name</label><!--   -->
+      <input type="text" [(ngModel)]="creatorName" class="form-control" placeholder="John Black" required/>
+    </div>
+    <div class="form-group">
+      <label>Survey title</label>
+      <input type="text" [(ngModel)]="surveyName" class="form-control" placeholder="Survey 1" required/>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" [(ngModel)]="description" class="form-control" placeholder="Description (optional)"/>
+    </div>
+    <div class="form-group">
+      <label>Created date</label>
+      <input type="text" class="form-control" disabled="disabled" value="Today"/>
+    </div>
+
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="onSubmit()">Save new survey</button>
+      <div class="invalid" *ngIf="validate()">
+        <label>Please fill out all required fields.</label>
+      </div>
+    </div>
+  </ng-template>
+
+</div>
+
+

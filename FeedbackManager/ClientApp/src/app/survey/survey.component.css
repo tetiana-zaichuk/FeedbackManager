@@ -1,0 +1,14 @@
+body {
+}
+
+.card-question {
+  border: 2px solid rgba(85, 85, 85, 0.7);
+  padding: 15px;
+  margin: 0 15px;
+  width: 35%;
+}
+
+.flexcontainer {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,64 @@
+<div class="container-main">
+  <div *ngIf="tableMode; else create">
+    <h1 class="text-center title"><b>{{ survey.surveyName }}</b></h1>
+    <div>{{ survey.description }}</div>
+    <br />
+    <div class="row">
+      <div class="col-md-4 space-around text-center">
+        <br />
+        <h5 class="card-subtitle mb-2 text-muted">{{ survey.creatorName }}</h5>
+      </div>
+      <div class="col-md-8 text-right space-around">
+        <p><span class="card-subtitle mb-2 text-muted text-date">{{ survey.createdAt | date }}</span></p>
+        <button type="button" class="btn-style" (click)="add()">Add new question</button>
+      </div>
+    </div>
+    <br />
+    <div class="card" *ngFor="let question of questions; let i = index">
+      <div class="flexcontainer">
+        <div class=" space-around card-question">
+          <p> {{ question.questionName }}</p>
+          <div>{{ question.shortComment }}</div>
+        </div>
+        <div class="space-around">
+          <div>
+            <ul *ngFor="let answer of question.answers">
+              <li>{{answer}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="paragraph-line"></div>
+    </div>
+    <button type="button" class="btn-style" [routerLink]='[""]'>Back to surveys list</button>
+  </div>
+
+  <ng-template #create>
+    <h1 class="text-center title"><em>Create new question</em></h1>
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="cancel()">Back to survey</button>
+    </div>
+    <div class="form-group">
+      <label>Question title</label>
+      <input type="text" [(ngModel)]="questionName" class="form-control" placeholder="Question title 1" required />
+    </div>
+    <div class="form-group">
+      <label>Short comment</label>
+      <input type="text" [(ngModel)]="shortComment" class="form-control" placeholder="Short comment (optional)" />
+    </div>
+    <div class="form-group">
+      <label>Answers (Please, use ; between answers)</label>
+      <input type="text" [(ngModel)]="answers" class="form-control" placeholder="Answer 1;Answers 2;Answers 3" required />
+    </div>
+
+    <div class="text-left">
+      <button type="button" class="btn-style" (click)="onSubmit()">Save new question</button>
+      <div class="invalid" *ngIf="validate()">
+        <label>Please fill out all required fields.</label>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+
+
