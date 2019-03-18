@@ -28,6 +28,7 @@ namespace FeedbackManager.Controllers
         [HttpGet("{id}")]
         public virtual async Task<ObjectResult> GetById(int id)
         {
+            if (id == 0) return new ObjectResult(NotFound());
             var dto = await _surveyService.GetEntityByIdAsync(id);
             return dto == null ? new ObjectResult(NotFound()) : Ok(dto);
         }
@@ -35,13 +36,13 @@ namespace FeedbackManager.Controllers
         [HttpPost]
         public virtual async Task<ObjectResult> Create([FromBody] SurveyDto request)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || request==null)
             {
                 return BadRequest(ModelState);
             }
 
             var dto = await _surveyService.CreateEntityAsync(request);
-            return dto == null ? new ObjectResult(StatusCode(500)) : Ok(dto);
+            return Ok(dto);
         }
 
         [HttpPut("{id}")]

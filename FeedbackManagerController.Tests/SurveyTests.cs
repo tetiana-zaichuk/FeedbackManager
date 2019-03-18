@@ -55,7 +55,7 @@ namespace FeedbackManagerController.Tests
         [Test]
         public void GetById_Should_ReturnNotFound_When_Called()
         {
-            var result = _surveyController.GetById(_survey.Id).Result;
+            var result = _surveyController.GetById(0).Result;
             Assert.AreEqual(StatusCodes.Status404NotFound, result.StatusCode);
         }
 
@@ -68,19 +68,12 @@ namespace FeedbackManagerController.Tests
         }
 
         [Test]
-        public void Create_Should_ReturnInternalServerError_When_SurveyIsNull()
+        public void Create_Should_ReturnBadRequest_When_SurveyIsNull()
         {
             var result = _surveyController.Create(null).Result;
-            Assert.AreEqual(StatusCodes.Status500InternalServerError, result.StatusCode);
-        }
-        
-        [Test]
-        public void Create_Should_ReturnBadRequest_When_SurveyHasId()
-        {
-            var result = _surveyController.Create(_survey).Result;
             Assert.AreEqual(StatusCodes.Status400BadRequest, result.StatusCode);
         }
-
+        
         [Test]
         public void Update_Should_ReturnInternalServerError_When_Called()
         {
