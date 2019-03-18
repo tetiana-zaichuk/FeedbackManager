@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -19,26 +18,29 @@ namespace FeedbackManager.Controllers
         public SurveyController(ISurveyService service) => _surveyService = service;
 
         [HttpGet]
-        public virtual async Task<ObjectResult> Get()
+        public async Task<IActionResult> Get()
         {
             var dtos = await _surveyService.GetAllEntitiesAsync();
-            return !dtos.Any() ? new ObjectResult(NoContent()) : Ok(dtos);
+            if (!dtos.Any())
+                return NoContent();
+            return Ok(dtos);
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ObjectResult> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            if (id == 0) return new ObjectResult(NotFound());
             var dto = await _surveyService.GetEntityByIdAsync(id);
-            return dto == null ? new ObjectResult(NotFound()) : Ok(dto);
+            if (dto == null)
+                return NotFound();
+            return Ok(dto);
         }
 
         [HttpPost]
-        public virtual async Task<ObjectResult> Create([FromBody] SurveyDto request)
+        public async Task<ObjectResult> Create([FromBody] SurveyDto request)
         {
-            if (!ModelState.IsValid || request==null)
+            if (!_surveyService.SurveyValidation(request))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Please fill out these fields: creator name and survey title.");
             }
 
             var dto = await _surveyService.CreateEntityAsync(request);
@@ -46,10 +48,15 @@ namespace FeedbackManager.Controllers
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<HttpResponseMessage> Update([FromRoute] int id, [FromBody] SurveyDto request)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] SurveyDto request)
         {
             var result = await _surveyService.UpdateEntityByIdAsync(request, id);
-            return !result ? new HttpResponseMessage(HttpStatusCode.InternalServerError) : new HttpResponseMessage(HttpStatusCode.NoContent);
+            if (!_surveyService.SurveyValidation(request))
+            {
+                return BadRequest("Please fill out these fields: creator name and survey title.");
+            }
+            
+            return NoContent();
         }
 
         [HttpDelete("{id}")]

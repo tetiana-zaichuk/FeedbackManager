@@ -6,6 +6,8 @@ namespace FeedbackManager.BusinessLayer.Interfaces
 {
     public interface ISurveyService
     {
+        bool SurveyValidation(SurveyDto survey);
+
         Task<IEnumerable<SurveyDto>> GetAllEntitiesAsync();
 
         Task<SurveyDto> GetEntityByIdAsync(int id);

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FeedbackManager.BusinessLayer.Interfaces;
@@ -17,7 +18,7 @@ namespace FeedbackManager.Controllers
         public QuestionController(IQuestionService service) => _questionService = service;
 
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<QuestionDto>>> Get()
+        public async Task<IActionResult> Get()
         {
             var dtos = await _questionService.GetAllEntitiesAsync();
             if (!dtos.Any())
@@ -28,7 +29,7 @@ namespace FeedbackManager.Controllers
         }
 
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<QuestionDto>> GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             var dto = await _questionService.GetEntityByIdAsync(id);
             if (dto == null)
@@ -39,46 +40,34 @@ namespace FeedbackManager.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult<QuestionDto>> Create([FromBody] QuestionDto request)
+        public async Task<ObjectResult> Create([FromBody] QuestionDto request)
         {
-            if (!ModelState.IsValid)
+            if (!_questionService.QuestionValidation(request))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Please fill out these fields: question title, survey id and answers.");
             }
 
             var dto = await _questionService.CreateEntityAsync(request);
-            if (dto == null)
-            {
-                return StatusCode(500);
-            }
-            return dto;
+            return Ok(dto);
         }
 
         [HttpPut("{id}")]
-        public virtual async Task<ActionResult> Update([FromRoute] int id, [FromBody] QuestionDto request)
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] QuestionDto request)
         {
-            if (!ModelState.IsValid)
+            if (!_questionService.QuestionValidation(request))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Please fill out these fields: question title, survey id and answers.");
             }
 
             var result = await _questionService.UpdateEntityByIdAsync(request, id);
-            if (!result)
-            {
-                return StatusCode(500);
-            }
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public virtual async Task<ActionResult> Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             var result = await _questionService.DeleteEntityByIdAsync(id);
-            if (!result)
-            {
-                return StatusCode(500);
-            }
-            return NoContent();
+            return !result ? new HttpResponseMessage(HttpStatusCode.InternalServerError) : new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }

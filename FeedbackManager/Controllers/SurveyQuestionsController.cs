@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FeedbackManager.BusinessLayer.Interfaces;
@@ -17,7 +18,7 @@ namespace FeedbackManager.Controllers
         public SurveyQuestionsController(ISurveyQuestionsService service) => _surveyQuestionsService = service;
         
         [HttpGet("{surveyId}")]
-        public async Task<ActionResult<IEnumerable<QuestionDto>>> Get(int surveyId)
+        public async Task<IActionResult> Get(int surveyId)
         {
             var dtos = await _surveyQuestionsService.GetAllEntitiesBySurveyIdAsync(surveyId);
             if (!dtos.Any())
@@ -28,30 +29,22 @@ namespace FeedbackManager.Controllers
         }
         
         [HttpPost("{surveyId}")]
-        public async Task<ActionResult<QuestionDto>> Create([FromRoute] int surveyId, [FromBody] QuestionDto request)
+        public async Task<ObjectResult> Create([FromRoute] int surveyId, [FromBody] QuestionDto request)
         {
-            if (!ModelState.IsValid)
+            if (!_surveyQuestionsService.QuestionValidation(request))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Please fill out these fields: question title, survey id and answers.");
             }
 
             var dto = await _surveyQuestionsService.CreateEntityAsync(surveyId, request);
-            if (dto == null)
-            {
-                return StatusCode(500);
-            }
-            return dto;
+            return Ok(dto);
         }
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<HttpResponseMessage> Delete(int id)
         {
             var result = await _surveyQuestionsService.DeleteEntityByIdAsync(id);
-            if (!result)
-            {
-                return StatusCode(500);
-            }
-            return NoContent();
+            return !result ? new HttpResponseMessage(HttpStatusCode.InternalServerError) : new HttpResponseMessage(HttpStatusCode.NoContent);
         }
     }
 }

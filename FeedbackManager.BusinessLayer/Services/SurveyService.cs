@@ -20,6 +20,8 @@ namespace FeedbackManager.BusinessLayer.Services
             _mapper = mapper;
         }
 
+        public bool SurveyValidation(SurveyDto survey) => !string.IsNullOrWhiteSpace(survey.CreatorName) && !string.IsNullOrWhiteSpace(survey.SurveyName);
+
         public async Task<IEnumerable<SurveyDto>> GetAllEntitiesAsync()
         {
             var entities = await _uow.SurveyRepository.GetAsync();

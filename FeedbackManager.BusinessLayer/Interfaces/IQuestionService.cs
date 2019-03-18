@@ -6,6 +6,8 @@ namespace FeedbackManager.BusinessLayer.Interfaces
 {
     public interface IQuestionService
     {
+        bool QuestionValidation(QuestionDto question);
+
         Task<IEnumerable<QuestionDto>> GetAllEntitiesAsync();
 
         Task<QuestionDto> GetEntityByIdAsync(int id);
